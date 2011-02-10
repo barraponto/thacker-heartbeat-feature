@@ -218,6 +218,7 @@ function thacker_heartbeat_rules_defaults() {
             '#name' => 'heartbeat_rules_default_action',
             '#settings' => array(
               'uid_param' => '[account:uid]',
+              'uid_param' => '',
               'uid_target_param' => '',
               'nid_param' => '',
               'nid_target_param' => '',
