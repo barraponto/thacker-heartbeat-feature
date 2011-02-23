@@ -100,13 +100,7 @@ function thacker_heartbeat_rules_defaults() {
         '#status' => 'default',
         '#conditions' => array(
           '0' => array(
-            '#type' => 'condition',
-            '#settings' => array(
-              '#argument map' => array(
-                'node' => 'node',
-              ),
-            ),
-            '#name' => 'rules_condition_content_is_published',
+            '#weight' => 0,
             '#info' => array(
               'label' => 'content is published',
               'label callback' => FALSE,
@@ -118,19 +112,17 @@ function thacker_heartbeat_rules_defaults() {
               ),
               'module' => 'Node',
             ),
-            '#weight' => 0,
-          ),
-          '1' => array(
+            '#name' => 'rules_condition_content_is_published',
             '#settings' => array(
-              'type' => array(
-                'profile' => 'profile',
-              ),
               '#argument map' => array(
                 'node' => 'node',
               ),
             ),
             '#type' => 'condition',
-            '#name' => 'rules_condition_content_is_type',
+          ),
+          '1' => array(
+            '#weight' => 0,
+            '#negate' => 1,
             '#info' => array(
               'label' => 'Created content is Profile',
               'arguments' => array(
@@ -141,21 +133,42 @@ function thacker_heartbeat_rules_defaults() {
               ),
               'module' => 'Node',
             ),
-            '#weight' => 0,
-            '#negate' => 1,
+            '#name' => 'rules_condition_content_is_type',
+            '#type' => 'condition',
+            '#settings' => array(
+              'type' => array(
+                'profile' => 'profile',
+              ),
+              '#argument map' => array(
+                'node' => 'node',
+              ),
+            ),
           ),
         ),
         '#actions' => array(
           '0' => array(
             '#weight' => 0,
-            '#type' => 'action',
+            '#info' => array(
+              'label' => 'Logs activity for single users adding content',
+              'label callback' => FALSE,
+              'eval input' => array(
+                '0' => 'uid_param',
+                '1' => 'uid_target_param',
+                '2' => 'nid_param',
+                '3' => 'nid_target_param',
+                '4' => 'message_id_param',
+                '5' => 'variables_param',
+              ),
+              'module' => 'heartbeat',
+            ),
+            '#name' => 'heartbeat_rules_default_action',
             '#settings' => array(
               'uid_param' => '[author:uid]',
               'uid_target_param' => '0',
               'nid_param' => '[node:nid]',
               'nid_target_param' => '',
               'message_id_param' => 'heartbeat_add_node',
-              'variables_param' => '@username=|=[author:user-name-url]-|-@node_type=|=[node:type-name]-|-@time_ago=|=[node:since]-|-',
+              'variables_param' => '@username=|=[author:user-name-url]-|-@node_type=|=[node:type-name]-|-@node_title=|=[node:title-raw]-|-',
               '#eval input' => array(
                 'token_rules_input_evaluator' => array(
                   'uid_param' => array(
@@ -171,20 +184,7 @@ function thacker_heartbeat_rules_defaults() {
                 ),
               ),
             ),
-            '#name' => 'heartbeat_rules_default_action',
-            '#info' => array(
-              'label' => 'Logs activity for single users adding content',
-              'label callback' => FALSE,
-              'eval input' => array(
-                '0' => 'uid_param',
-                '1' => 'uid_target_param',
-                '2' => 'nid_param',
-                '3' => 'nid_target_param',
-                '4' => 'message_id_param',
-                '5' => 'variables_param',
-              ),
-              'module' => 'heartbeat',
-            ),
+            '#type' => 'action',
           ),
         ),
         '#version' => 6003,
