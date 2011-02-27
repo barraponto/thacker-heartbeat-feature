@@ -83,6 +83,29 @@ function thacker_heartbeat_heartbeat_message_info() {
 }
 
 /**
+ * Implementation of hook_imagecache_default_presets().
+ */
+function thacker_heartbeat_imagecache_default_presets() {
+  $items = array(
+    'avatar_heartbeat' => array(
+      'presetname' => 'avatar_heartbeat',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale_and_crop',
+          'data' => array(
+            'width' => '100',
+            'height' => '100',
+          ),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
  * Implementation of hook_rules_defaults().
  */
 function thacker_heartbeat_rules_defaults() {
