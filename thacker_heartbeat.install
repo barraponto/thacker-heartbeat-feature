@@ -1,0 +1,11 @@
+<?php
+
+function thacker_heartbeat_install() {
+  module_load_include('inc', 'thacker_heartbeat', 'thacker_heartbeat.strongarm');
+
+  $variables = thacker_heartbeat_strongarm();
+
+  foreach ($variables as $variable) {
+    variable_set($variable->name, $variable->value);
+  }
+}
